@@ -1,28 +1,31 @@
 package com.chatop.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chatop.api.model.DBUser;
-import com.chatop.api.repository.DBUserRepository;
+import com.chatop.api.service.DBUserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@Tag(name = "Users", description = "API for CRUD operations on Users")
 
 @RestController
 public class LoginController {
 
     @Autowired
-    private DBUserRepository userRepository;
+    private DBUserService dbUserService;
 
-    @GetMapping(path = "/all")
-    public @ResponseBody Iterable<DBUser> getAllUsers() {
-        // This returns a JSON or XML with the users
-        return userRepository.findAll();
-    }
-
-    @GetMapping("/user")
-    public String getUser() {
-        return "Welcome, DB User !";
+    @Operation(
+      summary = "Create a user",
+      description = "Create an user with an email, a name and a password. The response is the user object created.")
+    @PostMapping("/auth/register")
+    public DBUser registerDBUser(@RequestBody DBUser dbUser) {
+        return dbUserService.saveDBUser(dbUser);
     }
 
 }

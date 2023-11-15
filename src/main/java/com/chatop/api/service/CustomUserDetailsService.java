@@ -22,9 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private DBUserRepository dbUserRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DBUser user = dbUserRepository.findByName(username);
-        return new User(user.getName(), user.getPassword(), getGrantedAuthorities("USER"));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        DBUser user = dbUserRepository.findByEmail(email);
+        return new User(user.getEmail(), user.getPassword(), getGrantedAuthorities("USER"));
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(String role) {

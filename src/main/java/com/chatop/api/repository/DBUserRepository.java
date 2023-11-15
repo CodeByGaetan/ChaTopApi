@@ -1,9 +1,9 @@
 package com.chatop.api.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.chatop.api.model.DBUser;
 
-public interface DBUserRepository extends JpaRepository<DBUser, Integer> {
-    public DBUser findByName(String name);
+public interface DBUserRepository extends CrudRepository<DBUser, Integer> {
+    public DBUser findByEmail(String email);
 }

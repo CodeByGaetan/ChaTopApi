@@ -9,17 +9,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
-public class DBUser {
+@Table(name = "rentals")
+public class Rental {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-    private String email;
     private String name;
-    private String password;
-    
+    private Integer surface;
+    private Integer price;
+    private String picture;
+    private String description;
+    private Integer owner_id;
     private Date created_at;
     private Date updated_at;
 
@@ -32,14 +34,6 @@ public class DBUser {
         this.id = id;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -48,12 +42,44 @@ public class DBUser {
         this.name = name;
     }
 
-    public String getPassword() {
-        return this.password;
+    public Integer getSurface() {
+        return this.surface;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSurface(Integer surface) {
+        this.surface = surface;
+    }
+
+    public Integer getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public String getPicture() {
+        return this.picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getOwner_id() {
+        return this.owner_id;
+    }
+
+    public void setOwner_id(Integer owner_id) {
+        this.owner_id = owner_id;
     }
 
     public Date getCreated_at() {
@@ -71,6 +97,5 @@ public class DBUser {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-    
-   
+
 }
