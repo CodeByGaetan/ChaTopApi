@@ -1,4 +1,4 @@
-package com.chatop.api.security.service;
+package com.chatop.api.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.chatop.api.model.DBUser;
@@ -19,10 +20,10 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
     
-    private String jwtSigningKey = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
-
-    // @Value("${token.signing.key}")
-    // private String jwtSigningKey;
+    // private String jwtSigningKey = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
+    
+    @Value("${token.signing.key}")
+    private String jwtSigningKey;
     
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);

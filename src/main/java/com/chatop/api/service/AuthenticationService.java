@@ -1,4 +1,4 @@
-package com.chatop.api.security.service;
+package com.chatop.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,10 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.chatop.api.model.DBUser;
+import com.chatop.api.model.dao.request.SignInRequest;
+import com.chatop.api.model.dao.request.SignUpRequest;
+import com.chatop.api.model.dao.response.JwtAuthenticationResponse;
 import com.chatop.api.repository.DBUserRepository;
-import com.chatop.api.security.dao.request.SignInRequest;
-import com.chatop.api.security.dao.request.SignUpRequest;
-import com.chatop.api.security.dao.response.JwtAuthenticationResponse;
 
 @Service
 public class AuthenticationService {

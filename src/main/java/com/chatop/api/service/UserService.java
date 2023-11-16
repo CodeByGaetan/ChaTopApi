@@ -1,4 +1,4 @@
-package com.chatop.api.security.service;
+package com.chatop.api.service;
 
 import java.util.ArrayList;
 import java.util.List;

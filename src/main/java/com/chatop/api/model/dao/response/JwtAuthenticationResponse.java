@@ -1,4 +1,4 @@
-package com.chatop.api.security.dao.request;
+package com.chatop.api.model.dao.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignInRequest {
-    private String email;
-    private String password;
+public class JwtAuthenticationResponse {
+    private String token;
 }
