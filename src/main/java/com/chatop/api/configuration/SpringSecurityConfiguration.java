@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -22,11 +23,22 @@ public class SpringSecurityConfiguration {
 
     @Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http.authorizeHttpRequests(auth -> {
+		http
+			.authorizeHttpRequests(auth -> {
 			// auth.requestMatchers("/admin").hasRole("ADMIN");
 			// auth.requestMatchers("/user").hasRole("USER");
+			auth.requestMatchers("/auth/login").permitAll();
 			auth.anyRequest().authenticated();
-		}).formLogin(Customizer.withDefaults()).build();
+			})	
+
+			// .csrf(AbstractHttpConfigurer::disable);
+			.csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/login"))
+
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+			.formLogin(Customizer.withDefaults())
+		;
+		return http.build();
 	}
 
     @Bean
@@ -36,11 +48,8 @@ public class SpringSecurityConfiguration {
 
     @Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-
 		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-
 		authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
-
 		return authenticationManagerBuilder.build();
 	}
 }
