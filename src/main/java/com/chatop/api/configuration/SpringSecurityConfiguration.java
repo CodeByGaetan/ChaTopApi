@@ -35,7 +35,7 @@ public class SpringSecurityConfiguration {
 			.csrf(AbstractHttpConfigurer::disable)
 			// .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/login"))
 
-			// .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 			.formLogin(Customizer.withDefaults());
 		return http.build();

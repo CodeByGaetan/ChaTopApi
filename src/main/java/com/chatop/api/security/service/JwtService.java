@@ -1,4 +1,4 @@
-package com.chatop.api.auth;
+package com.chatop.api.security.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
