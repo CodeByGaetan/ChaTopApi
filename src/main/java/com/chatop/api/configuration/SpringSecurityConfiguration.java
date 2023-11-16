@@ -8,6 +8,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,38 +19,40 @@ import com.chatop.api.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SpringSecurityConfiguration {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
 
-    @Bean
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests(auth -> {
-			// auth.requestMatchers("/admin").hasRole("ADMIN");
-			// auth.requestMatchers("/user").hasRole("USER");
-			auth.requestMatchers("/auth/login").permitAll();
-			auth.anyRequest().authenticated();
-			})	
+				auth.requestMatchers("/auth/register").permitAll();
+				// auth.requestMatchers("/auth/login").permitAll();
+				auth.anyRequest().authenticated();
+			})
 
-			// .csrf(AbstractHttpConfigurer::disable);
-			.csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/login"))
+			// CSRF
+			.csrf(AbstractHttpConfigurer::disable)
+			// .csrf((csrf) -> csrf.ignoringRequestMatchers("/auth/login"))
 
-			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			// .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-			.formLogin(Customizer.withDefaults())
-		;
+			.formLogin(Customizer.withDefaults());
 		return http.build();
 	}
 
-    @Bean
+	@Bean
 	public BCryptPasswordEncoder passwordEncoder2() {
 		return new BCryptPasswordEncoder();
 	}
 
-    @Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-		authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder)
+			throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder = http
+				.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(customUserDetailsService)
+				.passwordEncoder(bCryptPasswordEncoder);
 		return authenticationManagerBuilder.build();
 	}
 }
