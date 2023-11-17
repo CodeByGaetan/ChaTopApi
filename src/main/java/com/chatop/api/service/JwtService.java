@@ -19,18 +19,30 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
-    
-    // private String jwtSigningKey = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
-    
+
+    // Clé de genération du JWT
     @Value("${token.signing.key}")
     private String jwtSigningKey;
+
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    // Génération du JWT
+    public String generateToken(DBUser userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+    private String generateToken(Map<String, Object> extraClaims, DBUser userDetails) {
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getEmail())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+    }
+
     
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    public String generateToken(DBUser userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
     }
 
     public boolean isTokenValid(String token, DBUser userDetails) {
@@ -41,13 +53,6 @@ public class JwtService {
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
-    }
-
-    private String generateToken(Map<String, Object> extraClaims, DBUser userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private boolean isTokenExpired(String token) {
@@ -63,8 +68,4 @@ public class JwtService {
                 .getBody();
     }
 
-    private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 }

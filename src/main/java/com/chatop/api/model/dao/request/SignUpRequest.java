@@ -1,16 +1,17 @@
 package com.chatop.api.model.dao.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SignUpRequest {
+
     private String name;
+
     private String email;
+
     private String password;
+
+    public boolean isNotValid() {
+        return name == null || email == null || password == null;
+    }
 }

@@ -1,14 +1,11 @@
 package com.chatop.api.model.dao.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+// import lombok.AllArgsConstructor;
+// import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+// import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SignInRequest {
     private String email;
     private String password;
