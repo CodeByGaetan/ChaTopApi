@@ -1,4 +1,4 @@
-package com.chatop.api.model.dao.response;
+package com.chatop.api.model.response;
 
 import lombok.AllArgsConstructor;
 

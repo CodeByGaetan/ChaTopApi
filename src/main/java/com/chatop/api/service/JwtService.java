@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.chatop.api.model.DBUser;
@@ -33,6 +34,7 @@ public class JwtService {
     public String generateToken(DBUser userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
+    
     private String generateToken(Map<String, Object> extraClaims, DBUser userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -40,14 +42,15 @@ public class JwtService {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
-    
+
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public boolean isTokenValid(String token, DBUser userDetails) {
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getEmail())) && !isTokenExpired(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        // DBUser.getEmail est equivalent à UserDetails.getUsername
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {

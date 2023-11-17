@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chatop.api.model.DBUser;
-import com.chatop.api.model.dao.request.SignInRequest;
-import com.chatop.api.model.dao.request.SignUpRequest;
-import com.chatop.api.model.dao.response.JwtAuthenticationResponse;
-import com.chatop.api.model.dao.response.MessageResponse;
+import com.chatop.api.model.request.SignInRequest;
+import com.chatop.api.model.request.SignUpRequest;
+import com.chatop.api.model.response.JwtAuthenticationResponse;
+import com.chatop.api.model.response.MessageResponse;
+import com.chatop.api.model.response.MyInfoResponse;
 import com.chatop.api.service.AuthenticationService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,11 +23,6 @@ public class AuthenticationController {
 
   @Autowired
   private AuthenticationService authenticationService;
-
-  @GetMapping("/auth/users")
-  public Iterable<DBUser> getAllUsers() {
-    return authenticationService.getAllUsers();
-  }
 
   @PostMapping("/auth/register")
   public ResponseEntity<?> signup(@RequestBody SignUpRequest request) {
@@ -48,9 +43,10 @@ public class AuthenticationController {
     return ResponseEntity.ok(response);
   }
 
-  // @GetMapping("/auth/me")
-  // public ResponseEntity<?> myInfo() {
-
-  // }
+  @GetMapping("/auth/me")
+  public ResponseEntity<MyInfoResponse> myInfo() {
+    MyInfoResponse response = authenticationService.myInfo();
+    return ResponseEntity.ok(response);
+  }
 
 }
