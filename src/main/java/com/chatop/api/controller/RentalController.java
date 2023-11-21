@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chatop.api.model.Rental;
+import com.chatop.api.model.entity.Rental;
 import com.chatop.api.model.request.RentalRequest;
 import com.chatop.api.model.response.MessageResponse;
 import com.chatop.api.model.response.RentalsResponse;
@@ -52,7 +52,11 @@ public class RentalController {
 
   @PutMapping("/rentals/{id}")
   public MessageResponse updateRental( RentalRequest rentalRequest, @PathVariable("id") final Integer id) {
-    rentalService.updateRental(rentalRequest, id);
+    try {
+      rentalService.updateRental(rentalRequest, id);
+    } catch (Exception e) {
+      // Rental update not authorized
+    }
     return new MessageResponse("Rental updated !");
   }
 }

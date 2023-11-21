@@ -7,6 +7,7 @@ import com.chatop.api.model.response.MessageResponse;
 import com.chatop.api.service.MessageService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class MessageController {
     MessageService messageService;
 
     @PostMapping("/messages")
-    public ResponseEntity<?> sendMessage(@RequestBody MessageRequest messageRequest) {
+    public ResponseEntity<?> sendMessage(HttpServletResponse response, @RequestBody MessageRequest messageRequest) {
 
         try {
             messageService.sendMessage(messageRequest);

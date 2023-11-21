@@ -8,16 +8,14 @@ import com.chatop.api.model.request.LoginRequest;
 import com.chatop.api.model.request.RegisterRequest;
 import com.chatop.api.model.response.JwtAuthenticationResponse;
 import com.chatop.api.model.response.MessageResponse;
-import com.chatop.api.model.response.UserResponse;
 import com.chatop.api.service.AuthenticationService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Users", description = "API for CRUD operations on Users")
+@Tag(name = "Authentication", description = "API for authentication")
 @RestController
 public class AuthenticationController {
 
@@ -41,11 +39,6 @@ public class AuthenticationController {
       return ResponseEntity.status(401).body(new MessageResponse("error"));
     }
     return ResponseEntity.ok(response);
-  }
-
-  @GetMapping("/auth/me")
-  public UserResponse myInfo() {
-    return authenticationService.myInfo();
   }
 
 }

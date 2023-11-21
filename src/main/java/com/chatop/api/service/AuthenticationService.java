@@ -5,16 +5,13 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.chatop.api.model.DBUser;
+import com.chatop.api.model.entity.DBUser;
 import com.chatop.api.model.request.LoginRequest;
 import com.chatop.api.model.request.RegisterRequest;
 import com.chatop.api.model.response.JwtAuthenticationResponse;
-import com.chatop.api.model.response.UserResponse;
 import com.chatop.api.repository.UserRepository;
 
 @Service
@@ -28,9 +25,6 @@ public class AuthenticationService {
 
     @Autowired
     private JwtService jwtService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -62,11 +56,12 @@ public class AuthenticationService {
     }
 
     public JwtAuthenticationResponse signIn(LoginRequest request) {
-        
+
         // Check if good credentials or User exists
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        } catch(Exception e) {
+            authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        } catch (Exception e) {
             return JwtAuthenticationResponse.builder().build();
         }
 
@@ -76,25 +71,6 @@ public class AuthenticationService {
         String jwt = jwtService.generateToken(user);
 
         return JwtAuthenticationResponse.builder().token(jwt).build();
-    }
-
-    public UserResponse myInfo() {    
-        DBUser user = getCurrentUser();
-
-        UserResponse response = new UserResponse();
-        response.setID(user.getId());
-        response.setEmail(user.getEmail());
-        response.setName(user.getName());
-        response.setCreated_at(user.getCreated_at());
-        response.setUpdated_at(user.getUpdated_at());
-        
-        return response;
-    }
-
-    public DBUser getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        return userService.findByEmail(userEmail);
     }
 
 }

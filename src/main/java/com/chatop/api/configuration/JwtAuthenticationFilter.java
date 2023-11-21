@@ -34,14 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         String userEmail = "";
 
-        // Si la route est login ou register, poursuivre directement les filtres de sécurité
+        // If the route is login, register or images then continue directly the security chain
         String url = request.getRequestURL().toString();
-        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") || url.contains("/images/")) {
+        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") ||
+         url.contains("/images/") || url.contains("/swagger-ui/") || url.contains("/v3/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Si un token est présent et valide, alors connexion à l'utilisateur et poursuite des filtres de sécurité
+        // If a valid token in present : connect to the corresponding user and continue de security chain
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
 
             jwt = authHeader.substring(7);
@@ -49,14 +50,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 userEmail = jwtService.extractUserName(jwt);
             } catch (Exception e) {
-                // System.out.println("Error during username extraction");
+                // The token is expired, invalid or the user can't be found 
             }
             
             if (!userEmail.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
-
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
@@ -67,12 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                     return;
                 }
-
             }
             
         }
 
-        // Sinon le statut 401 est renvoyé
+        // Else the 401 status is send back
         response.setStatus(401);
 
     }

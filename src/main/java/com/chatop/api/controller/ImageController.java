@@ -2,6 +2,8 @@ package com.chatop.api.controller;
 
 import java.io.IOException;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chatop.api.service.ImageService;
 
+@Hidden
 @RestController
 public class ImageController {
 

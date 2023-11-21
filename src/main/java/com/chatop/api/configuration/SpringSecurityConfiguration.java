@@ -31,17 +31,24 @@ public class SpringSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                
+                // Security on requests
                 .authorizeHttpRequests(request -> request
+
                 .requestMatchers("/auth/register").permitAll()
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/images/**").permitAll()
-
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                
                 .anyRequest().authenticated())
 
+                // Stateless session
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // CSRF disabled because stateless session
+                .csrf(AbstractHttpConfigurer::disable)
+
+                // Custom Jwt Authentification filter
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             ;

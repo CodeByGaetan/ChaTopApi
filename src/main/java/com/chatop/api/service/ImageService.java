@@ -13,6 +13,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.chatop.api.utils.EnvUtil;
+
 @Service
 public class ImageService {
 

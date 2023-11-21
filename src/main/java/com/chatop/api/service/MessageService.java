@@ -5,7 +5,7 @@ import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.chatop.api.model.Message;
+import com.chatop.api.model.entity.Message;
 import com.chatop.api.model.request.MessageRequest;
 import com.chatop.api.repository.MessageRepository;
 

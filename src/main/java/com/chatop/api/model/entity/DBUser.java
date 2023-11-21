@@ -1,4 +1,4 @@
-package com.chatop.api.model;
+package com.chatop.api.model.entity;
 
 import java.sql.Date;
 
@@ -11,20 +11,17 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "rentals")
-public class Rental {
+@Table(name = "users")
+public class DBUser {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+    private String email;
     private String name;
-    private Integer surface;
-    private Integer price;
-    private String picture;
-    private String description;
-    private Integer owner_id;
+    private String password;
     private Date created_at;
     private Date updated_at;
-
+   
 }

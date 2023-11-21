@@ -7,7 +7,7 @@ This project uses :
 - [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3
 - [ngx-charts](https://github.com/swimlane/ngx-charts) version 20.4.1
 
-# Install 
+# Install
 
 Install your node_modules before starting (`npm install`).
 On macOS, use the command `npm install --legacy-peer-deps` in case of dependency problems.
@@ -21,3 +21,6 @@ The application will automatically reload if you change any of the source files.
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+http://localhost:3001/api/swagger-ui/index.html
+http://localhost:3001/api/v3/api-docs
