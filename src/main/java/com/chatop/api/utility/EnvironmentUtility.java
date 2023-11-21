@@ -1,4 +1,4 @@
-package com.chatop.api.utils;
+package com.chatop.api.utility;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -8,7 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnvUtil {
+public class EnvironmentUtility {
     @Autowired
     Environment environment;
 

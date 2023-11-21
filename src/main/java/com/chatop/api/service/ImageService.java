@@ -12,13 +12,13 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.chatop.api.utils.EnvUtil;
+import com.chatop.api.utility.EnvironmentUtility;
 
 @Service
 public class ImageService {
 
     @Autowired
-    EnvUtil envUtil;
+    EnvironmentUtility envUtil;
 
     private final Path root = Paths.get("./images");
 
