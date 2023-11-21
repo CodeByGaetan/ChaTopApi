@@ -3,7 +3,7 @@ package com.chatop.api.model.request;
 import lombok.Data;
 
 @Data
-public class SignUpRequest {
+public class RegisterRequest {
     private String name;
     private String email;
     private String password;

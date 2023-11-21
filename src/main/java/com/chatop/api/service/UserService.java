@@ -13,20 +13,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.chatop.api.model.DBUser;
-import com.chatop.api.repository.DBUserRepository;
+import com.chatop.api.model.response.UserResponse;
+import com.chatop.api.repository.UserRepository;
 
 @Service
 public class UserService {
     @Autowired
-    private DBUserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserDetailsService userDetailsService() {
-
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
                 // return userRepository.findByEmail(username)
-                //         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
                 Optional<DBUser> user = userRepository.findByEmail(username);
                 return new User(user.get().getEmail(), user.get().getPassword(), getGrantedAuthorities("ROLE"));
             }
@@ -34,8 +34,26 @@ public class UserService {
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(String role) {
-		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-		return authorities;
-	}
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        return authorities;
+    }
+
+    public DBUser findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
+    }
+
+    public UserResponse getUserById(Integer id) {
+        DBUser user = userRepository.findById(id).orElseThrow();
+
+        UserResponse response = new UserResponse();
+        response.setID(user.getId());
+        response.setEmail(user.getEmail());
+        response.setName(user.getName());
+        response.setCreated_at(user.getCreated_at());
+        response.setUpdated_at(user.getUpdated_at());
+        
+        return response;
+    }
+
 }

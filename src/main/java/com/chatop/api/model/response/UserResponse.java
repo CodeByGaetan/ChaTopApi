@@ -5,7 +5,7 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class MyInfoResponse {
+public class UserResponse {
     private Integer ID;
     private String email;
     private String name;

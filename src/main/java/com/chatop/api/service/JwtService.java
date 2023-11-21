@@ -30,11 +30,12 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // Génération du JWT
+    // JWT generation
+
     public String generateToken(DBUser userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
-    
+
     private String generateToken(Map<String, Object> extraClaims, DBUser userDetails) {
         return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -43,19 +44,27 @@ public class JwtService {
     }
 
 
+    // Extract User Name functions
+
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String userName = extractUserName(token);
-        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
-        // DBUser.getEmail est equivalent à UserDetails.getUsername
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {
         final Claims claims = extractAllClaims(token);
         return claimsResolvers.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
+    }
+    
+
+    
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String userName = extractUserName(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        // DBUser.getEmail est equivalent à UserDetails.getUsername
     }
 
     private boolean isTokenExpired(String token) {
@@ -66,9 +75,6 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token)
-                .getBody();
-    }
+    
 
 }

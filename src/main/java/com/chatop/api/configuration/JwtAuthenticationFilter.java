@@ -32,41 +32,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userEmail;
+        String userEmail = "";
 
-        // Modifier la méthode pour que si le token n'est pas valide alors le status 401 est renvoyé
-
-        if (authHeader == null || authHeader.isBlank() || !authHeader.startsWith("Bearer ")) {
-
-            // Si pas de Bearer, alors seules les requètes vers auth/register ou auth/login sont autorisées
-            String url= request.getRequestURL().toString();
-            if (!url.endsWith("/auth/register") && !url.endsWith("/auth/login")) {
-                response.setStatus(401);
-                return;
-            }
-
+        // Si la route est login ou register, poursuivre directement les filtres de sécurité
+        String url = request.getRequestURL().toString();
+        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") || url.contains("/images/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractUserName(jwt);
-        if ( !userEmail.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                context.setAuthentication(authToken);
-                SecurityContextHolder.setContext(context);
+        // Si un token est présent et valide, alors connexion à l'utilisateur et poursuite des filtres de sécurité
+        if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
+
+            jwt = authHeader.substring(7);
+
+            try {
+                userEmail = jwtService.extractUserName(jwt);
+            } catch (Exception e) {
+                // System.out.println("Error during username extraction");
             }
+            
+            if (!userEmail.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    context.setAuthentication(authToken);
+                    SecurityContextHolder.setContext(context);
+
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+
+            }
+            
         }
 
-        filterChain.doFilter(request, response);
-
-        // System.out.println();
+        // Sinon le statut 401 est renvoyé
+        response.setStatus(401);
 
     }
-    
+
 }

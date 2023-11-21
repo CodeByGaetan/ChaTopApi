@@ -11,19 +11,16 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "rentals")
-public class Rental {
-
+@Table(name = "messages")
+public class Message {
+    
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private String name;
-    private Integer surface;
-    private Integer price;
-    private String picture;
-    private String description;
-    private Integer owner_id;
+    private Integer rental_id;
+    private Integer user_id;
+    private String message;
     private Date created_at;
     private Date updated_at;
 
