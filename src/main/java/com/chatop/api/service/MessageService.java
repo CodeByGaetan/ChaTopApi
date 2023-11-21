@@ -15,14 +15,13 @@ public class MessageService {
     @Autowired
     MessageRepository messageRepository;
     
-    public Message sendMessage(MessageRequest messageRequest) throws Exception {
+    public Message createMessage(MessageRequest messageRequest) throws Exception {
 
-        if (messageRequest.isNotValid()) {
+        if (messageRequest.getMessage() == null || messageRequest.getUser_id() == null || messageRequest.getRental_id() == null) {
             throw new Exception("Message request not valid");
         }
 
         Message message = new Message();
-
         message.setRental_id(messageRequest.getRental_id());
         message.setUser_id(messageRequest.getUser_id());
         message.setMessage(messageRequest.getMessage());

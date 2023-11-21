@@ -27,8 +27,6 @@ public class UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) {
-                // return userRepository.findByEmail(username)
-                // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
                 Optional<DBUser> user = userRepository.findByEmail(username);
                 return new User(user.get().getEmail(), user.get().getPassword(), getGrantedAuthorities("ROLE"));
             }
@@ -51,17 +49,6 @@ public class UserService {
         return generateUserResponse(user);
     }
 
-    // public UserResponse myInfo() {
-    // DBUser user = getCurrentUser();
-    // UserResponse response = new UserResponse();
-    // response.setID(user.getId());
-    // response.setEmail(user.getEmail());
-    // response.setName(user.getName());
-    // response.setCreated_at(user.getCreated_at());
-    // response.setUpdated_at(user.getUpdated_at());
-    // return response;
-    // }
-
     public UserResponse generateUserResponse(DBUser user) {
         UserResponse response = new UserResponse();
         response.setID(user.getId());
@@ -75,11 +62,8 @@ public class UserService {
     public DBUser getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
-        return findByEmail(userEmail);
+        DBUser user = userRepository.findByEmail(userEmail).orElseThrow();
+        return user;
     }
-
-    public DBUser findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow();
-    }
-
+    
 }

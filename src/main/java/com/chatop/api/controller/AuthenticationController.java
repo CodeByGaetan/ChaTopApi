@@ -6,39 +6,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chatop.api.model.request.LoginRequest;
 import com.chatop.api.model.request.RegisterRequest;
-import com.chatop.api.model.response.JwtAuthenticationResponse;
+import com.chatop.api.model.response.JwtAuthResponse;
 import com.chatop.api.model.response.MessageResponse;
 import com.chatop.api.service.AuthenticationService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Authentication", description = "API for authentication")
+@Tag(name = "Authentication", description = "API for authentication operations")
 @RestController
 public class AuthenticationController {
 
   @Autowired
   private AuthenticationService authenticationService;
 
+  @Operation(summary = "Sign up a user")
   @PostMapping("/auth/register")
   public ResponseEntity<?> signup(@RequestBody RegisterRequest request) {
-    JwtAuthenticationResponse response = authenticationService.signUp(request);
-    // True if name, email or password is null
-    if(response.getToken() == null) {
+    try {
+      JwtAuthResponse response = authenticationService.signUp(request);
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
       return ResponseEntity.badRequest().body("{}");
     }
-    return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "Sign in a user")
   @PostMapping("/auth/login")
   public ResponseEntity<?> signin(@RequestBody LoginRequest request) {
-    JwtAuthenticationResponse response = authenticationService.signIn(request);
-    if(response.getToken() == null) {
+    try {
+      JwtAuthResponse response = authenticationService.signIn(request);
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
       return ResponseEntity.status(401).body(new MessageResponse("error"));
     }
-    return ResponseEntity.ok(response);
   }
 
 }

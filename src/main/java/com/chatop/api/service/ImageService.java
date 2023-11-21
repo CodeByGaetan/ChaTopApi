@@ -1,7 +1,6 @@
 package com.chatop.api.service;
 
 import java.net.MalformedURLException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,24 +24,16 @@ public class ImageService {
 
     public String save(MultipartFile file, String fileName) {
 
-        // String fileName = file.getOriginalFilename();
         String imgUrl = "";
 
         try {
             Path destination = this.root.resolve(fileName);
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new RuntimeException("A file of that name already exists.");
-            }
             throw new RuntimeException(e.getMessage());
         }
 
-        try {
-            imgUrl = envUtil.getServerUrlPrefi() + "images/" + fileName;
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        imgUrl = envUtil.getServerUrlPrefi() + "images/" + fileName;
 
         return imgUrl;
     }
@@ -54,10 +45,10 @@ public class ImageService {
             if (resource.exists() || resource.isReadable()) {
                 return resource;
             } else {
-                throw new RuntimeException("Could not read the file!");
+                throw new RuntimeException("Could not read the file !");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 

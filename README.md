@@ -1,26 +1,28 @@
 # ChaTop Api
 
-Check out the results of the last Olympic Games with beautiful charts. Visualize the proportion of medals won by country on a pie chart and 
-display details by country with a line chart of medals won by dates.
+The API of the ChâTop Web App. Provide access and operations on the ChâTop applicaiton database.
 
 This project uses :
-- [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3
-- [ngx-charts](https://github.com/swimlane/ngx-charts) version 20.4.1
+- [JAVA] version 17
+- [Maven] (https://maven.apache.org/guides/index.html) version 4.0.0
+- [SpringBoot] (https://spring.io/projects/spring-boot) version 3.1.5 with Spring dependencies : Spring Web, Spring Security, Spring Data JPA, Lombok, OAuth2 Client and MySQL Driver
+- [JJWT] (https://github.com/jwtk/jjwt.git) version 0.11.5
+- [Springdoc] (https://github.com/springdoc/springdoc-openapi.git) version 2.2.0
+
+# API Documentation
+
+JSON documentation : http://localhost:3001/api/v3/api-docs
+HTML documentation : http://localhost:3001/api/swagger-ui/index.html
 
 # Install
 
-Install your node_modules before starting (`npm install`).
-On macOS, use the command `npm install --legacy-peer-deps` in case of dependency problems.
+Install all dependencies before starting `npm install`.
 
-## Development server
+# Developpement run
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
-Use `ng serve --host 0.0.0.0` to access the dev server from another device on the same network. Navigate to `http://(HostDeviceIP):4200/`.
-The application will automatically reload if you change any of the source files.
+Run the project from an IDE (Visual Studio Code or Eclipse) or use the command `mvn spring-boot:run`.
 
-## Build
+# Build and Run the jar file
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-http://localhost:3001/api/swagger-ui/index.html
-http://localhost:3001/api/v3/api-docs
+Run `mvn package` to build the project. The build artifact will be stored in the `target/` directory.
+Run `java -jar target/api-0.0.1-SNAPSHOT.jar` to launch the built package.

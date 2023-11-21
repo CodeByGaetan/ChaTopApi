@@ -22,20 +22,6 @@ public class ImageController {
     @Autowired
     private ImageService imageService;
 
-    // @GetMapping(value = "/images/{fileName}", produces =
-    // MediaType.IMAGE_PNG_VALUE)
-    // public @ResponseBody InputStream getImage(@PathVariable("fileName") final
-    // String fileName) throws IOException {
-    // Resource img = imageService.load(fileName);
-    // return img.getInputStream();
-    // }
-
-    // @GetMapping(value = "/image")
-    // public void getImage(HttpServletResponse response) throws IOException {
-    // ClassPathResource imgFile = new ClassPathResource("images/test.png");
-    // StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
-    // }
-
     @GetMapping("/images/{fileName}")
     public ResponseEntity<InputStreamResource> getImage(@PathVariable("fileName") final String fileName)
             throws IOException {

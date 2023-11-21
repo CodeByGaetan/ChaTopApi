@@ -1,7 +1,8 @@
 package com.chatop.api.service;
 
 import java.sql.Date;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.chatop.api.model.entity.DBUser;
 import com.chatop.api.model.entity.Rental;
 import com.chatop.api.model.request.RentalRequest;
+import com.chatop.api.model.response.RentalResponse;
 import com.chatop.api.model.response.RentalsResponse;
 import com.chatop.api.repository.RentalRepository;
 
@@ -28,11 +30,18 @@ public class RentalService {
 
     public RentalsResponse getRentals() {
         Iterable<Rental> rentalList = rentalRepository.findAll();
-        return new RentalsResponse(rentalList);
+
+        List<RentalResponse> rentalResponseList = new ArrayList<RentalResponse>();
+        rentalList.forEach(rental -> {
+            rentalResponseList.add(generatRentalResponse(rental));
+        });
+
+        return new RentalsResponse(rentalResponseList);
     }
 
-    public Optional<Rental> getRental(Integer id) {
-        return rentalRepository.findById(id);
+    public RentalResponse getRentalById(Integer id) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        return generatRentalResponse(rental);
     }
 
     public Rental createRental(RentalRequest rentalRequest) {
@@ -58,8 +67,7 @@ public class RentalService {
 
     public Rental updateRental(RentalRequest rentalRequest, Integer id) throws Exception {
 
-        Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("rental not found"));
+        Rental rental = rentalRepository.findById(id).orElseThrow();
 
         // Update only if the current user is the rental's owner
         DBUser currentUser = userService.getCurrentUser();
@@ -74,6 +82,22 @@ public class RentalService {
         }
 
         return rentalRepository.save(rental);
+    }
+
+    public RentalResponse generatRentalResponse(Rental rental) {
+
+        RentalResponse rentalResponse = new RentalResponse();
+        rentalResponse.setId(rental.getId());
+        rentalResponse.setName(rental.getName());;
+        rentalResponse.setSurface(rental.getSurface());;
+        rentalResponse.setPrice(rental.getPrice());;
+        rentalResponse.setPicture(rental.getPicture());
+        rentalResponse.setDescription(rental.getDescription());
+        rentalResponse.setOwner_id(rental.getOwner_id());;
+        rentalResponse.setCreated_at(rental.getCreated_at());;
+        rentalResponse.setUpdated_at(rental.getUpdated_at());
+        
+        return rentalResponse;
     }
 
 }

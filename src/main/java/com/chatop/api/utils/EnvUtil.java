@@ -16,8 +16,9 @@ public class EnvUtil {
     private String hostname;
 
     public String getPort() {
-        if (port == null)
+        if (port == null) {
             port = environment.getProperty("local.server.port");
+        }
         return port;
     }
 
@@ -25,8 +26,14 @@ public class EnvUtil {
         return Integer.valueOf(getPort());
     }
 
-    public String getHostname() throws UnknownHostException {
-        if (hostname == null) hostname = InetAddress.getLocalHost().getHostAddress();
+    public String getHostname() {
+        if (hostname == null) {
+            try {
+                hostname = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                // Can't get LocalHost Address
+            }
+        }
         return hostname;
     }
 
@@ -34,7 +41,7 @@ public class EnvUtil {
         return environment.getProperty("server.servlet.contextPath");
     }
 
-    public String getServerUrlPrefi() throws UnknownHostException {
+    public String getServerUrlPrefi() {
         // return "http://" + getHostname() + ":" + getPort() + getContextPath() + "/";
         return "http://localhost:" + getPort() + getContextPath() + "/";
     }
