@@ -34,15 +34,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt;
         String userEmail = "";
 
-        // If the route is login, register or images then continue directly the security chain
+        // If the route is login, register or images then continue directly the security
+        // chain
         String url = request.getRequestURL().toString();
         if (url.endsWith("/auth/register") || url.endsWith("/auth/login") ||
-         url.contains("/images/") || url.contains("/swagger-ui/") || url.contains("/v3/api-docs")) {
+                url.contains("/images/") || url.contains("/swagger-ui/") || url.contains("/v3/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // If a valid token in present : connect to the corresponding user and continue de security chain
+        // If a valid token in present : connect to the corresponding user and continue
+        // de security chain
         if (authHeader != null && !authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
 
             jwt = authHeader.substring(7);
@@ -50,9 +52,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 userEmail = jwtService.extractUserName(jwt);
             } catch (Exception e) {
-                // The token is expired, invalid or the user can't be found 
+                // The token is expired, invalid or the user can't be found
             }
-            
+
             if (!userEmail.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
 
                 UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
@@ -68,7 +70,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     return;
                 }
             }
-            
+
         }
 
         // Else the 401 status is send back

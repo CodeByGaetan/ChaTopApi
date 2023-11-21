@@ -56,14 +56,15 @@ public class AuthenticationService {
     public JwtAuthResponse signIn(LoginRequest request) throws Exception {
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         } catch (Exception e) {
-           throw new Exception("Wrong credentials or user not exists");
+            throw new Exception("Wrong credentials or user not exists");
         }
 
         DBUser user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new Exception("Invalid email or password."));
-            
+
         String jwt = jwtService.generateToken(user);
 
         return JwtAuthResponse.builder().token(jwt).build();

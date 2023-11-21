@@ -76,7 +76,7 @@ public class RentalService {
             rental.setSurface(rentalRequest.getSurface());
             rental.setPrice(rentalRequest.getPrice());
             rental.setDescription(rentalRequest.getDescription());
-            rental.setUpdated_at(new Date(System.currentTimeMillis())); 
+            rental.setUpdated_at(new Date(System.currentTimeMillis()));
         } else {
             throw new Exception("Rental update not authorized");
         }
@@ -88,15 +88,15 @@ public class RentalService {
 
         RentalResponse rentalResponse = new RentalResponse();
         rentalResponse.setId(rental.getId());
-        rentalResponse.setName(rental.getName());;
-        rentalResponse.setSurface(rental.getSurface());;
-        rentalResponse.setPrice(rental.getPrice());;
+        rentalResponse.setName(rental.getName());
+        rentalResponse.setSurface(rental.getSurface());
+        rentalResponse.setPrice(rental.getPrice());
         rentalResponse.setPicture(rental.getPicture());
         rentalResponse.setDescription(rental.getDescription());
-        rentalResponse.setOwner_id(rental.getOwner_id());;
-        rentalResponse.setCreated_at(rental.getCreated_at());;
+        rentalResponse.setOwner_id(rental.getOwner_id());
+        rentalResponse.setCreated_at(rental.getCreated_at());
         rentalResponse.setUpdated_at(rental.getUpdated_at());
-        
+
         return rentalResponse;
     }
 

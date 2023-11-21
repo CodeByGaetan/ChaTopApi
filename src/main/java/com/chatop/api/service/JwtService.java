@@ -58,12 +58,11 @@ public class JwtService {
         return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
     }
     
-
+    // Check token validity
     
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
         return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
-        // DBUser.getEmail est equivalent à UserDetails.getUsername
     }
 
     private boolean isTokenExpired(String token) {

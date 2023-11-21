@@ -42,7 +42,6 @@ public class EnvUtil {
     }
 
     public String getServerUrlPrefi() {
-        // return "http://" + getHostname() + ":" + getPort() + getContextPath() + "/";
         return "http://localhost:" + getPort() + getContextPath() + "/";
     }
 }

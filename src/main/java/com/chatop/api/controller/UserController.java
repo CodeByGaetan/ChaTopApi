@@ -18,17 +18,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    
+
     @Operation(summary = "Get current user info")
     @GetMapping("/auth/me")
     public UserResponse getCurrentUserInfo() {
-    return userService.getCurrentUserInfo();
+        return userService.getCurrentUserInfo();
     }
-    
+
     @Operation(summary = "Get user info by Id")
     @GetMapping("/user/{id}")
     public UserResponse getUserInfoById(@PathVariable("id") final Integer id) {
         return userService.getUserInfoById(id);
     }
-    
+
 }

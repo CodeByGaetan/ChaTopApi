@@ -16,7 +16,16 @@ HTML documentation : http://localhost:3001/api/swagger-ui/index.html
 
 # Install
 
-Install all dependencies before starting `npm install`.
+Install all dependencies before starting : `npm install`.
+
+MySQL Database install :
+- Install mySQL on the localhost and enable the service
+- From this app root directory, launch and connect to mySQL
+- Run `CREATE DATABASE chatopdb;` to create the database
+- Run `USE chatopdb;` to use the newly created database
+- Run `SOURCE script_bdd.sql;` to create the database tables
+- Run `CREATE USER 'springuser'@'%' IDENTIFIED BY 'ThePassword';` to create the MySQL user for the app. The user password must be the same than in the application.properties file.
+- Run `GRANT ALL ON chatopdb.* to 'springuser'@'%';` to give ChâTop database access to the new user
 
 # Developpement run
 
