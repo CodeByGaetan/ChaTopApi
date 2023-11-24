@@ -26,7 +26,7 @@ public class SpringSecurityConfiguration {
     private UserService userService;
 
     @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    private JwtAuthFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -52,6 +52,7 @@ public class SpringSecurityConfiguration {
             .authenticationProvider(authenticationProvider()).addFilterBefore(
                     jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             ;
+            
         return http.build();
     }
 

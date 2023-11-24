@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
@@ -37,9 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // If the route is login, register or images then continue directly the security
         // chain
         String url = request.getRequestURL().toString();
-        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") ||
-                url.contains("/images/") || url.contains("/swagger-ui/") || url.contains("/v3/api-docs")) {
+        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") 
+                || url.contains("/images/") || url.contains("/swagger-ui/")
+                || url.contains("/v3/api-docs")) {
+
             filterChain.doFilter(request, response);
+            
             return;
         }
 
@@ -60,13 +63,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userService.userDetailsService().loadUserByUsername(userEmail);
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    
                     context.setAuthentication(authToken);
+                    
                     SecurityContextHolder.setContext(context);
 
                     filterChain.doFilter(request, response);
+                    
                     return;
                 }
             }

@@ -15,7 +15,7 @@ import com.chatop.api.model.response.JwtAuthResponse;
 import com.chatop.api.repository.UserRepository;
 
 @Service
-public class AuthenticationService {
+public class JwtAuthService {
 
     @Autowired
     private UserRepository userRepository;

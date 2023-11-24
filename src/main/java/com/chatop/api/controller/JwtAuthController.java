@@ -8,7 +8,7 @@ import com.chatop.api.model.request.LoginRequest;
 import com.chatop.api.model.request.RegisterRequest;
 import com.chatop.api.model.response.JwtAuthResponse;
 import com.chatop.api.model.response.MessageResponse;
-import com.chatop.api.service.AuthenticationService;
+import com.chatop.api.service.JwtAuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Authentication", description = "API for authentication operations")
 @RestController
-public class AuthenticationController {
+public class JwtAuthController {
 
   @Autowired
-  private AuthenticationService authenticationService;
+  private JwtAuthService authenticationService;
 
   @Operation(summary = "Sign up a user")
   @PostMapping("/auth/register")
