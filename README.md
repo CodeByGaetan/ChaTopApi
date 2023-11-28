@@ -24,8 +24,8 @@ MySQL Database install :
 - Run `CREATE DATABASE chatopdb;` to create the database
 - Run `USE chatopdb;` to use the newly created database
 - Run `SOURCE script_bdd.sql;` to create the database tables
-- Run `CREATE USER 'springuser'@'%' IDENTIFIED BY 'ThePassword';` to create the MySQL user for the app. The user password must be the same than in the application.properties file.
-- Run `GRANT ALL ON chatopdb.* to 'springuser'@'%';` to give ChâTop database access to the new user
+- Run `CREATE USER 'TheUsername'@'%' IDENTIFIED BY 'ThePassword';` to create the MySQL user for the app. The username and password must be the same than in the application.properties file.
+- Run `GRANT ALL ON chatopdb.* to 'TheUsername'@'%';` to give ChâTop database access to the new user
 
 # Developpement run
 

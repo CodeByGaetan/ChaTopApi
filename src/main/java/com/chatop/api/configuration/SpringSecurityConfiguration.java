@@ -28,19 +28,18 @@ public class SpringSecurityConfiguration {
     @Autowired
     private JwtAuthFilter jwtAuthenticationFilter;
 
+    public static final String[] allowedRoutes = {"/auth/register", "/auth/login", "/images/**", "/swagger-ui/**", "/v3/api-docs/**"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             // Security on requests
-            .authorizeHttpRequests(request -> request
-
-            .requestMatchers("/auth/register").permitAll()
-            .requestMatchers("/auth/login").permitAll()
-            .requestMatchers("/images/**").permitAll()
-            .requestMatchers("/swagger-ui/**").permitAll()
-            .requestMatchers("/v3/api-docs/**").permitAll()
-            
-            .anyRequest().authenticated())
+            .authorizeHttpRequests((request) -> {
+                for (String allowedRoute : allowedRoutes) {
+                    request.requestMatchers(allowedRoute).permitAll();
+                }
+                request.anyRequest().authenticated();
+            })
 
             // Stateless session
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

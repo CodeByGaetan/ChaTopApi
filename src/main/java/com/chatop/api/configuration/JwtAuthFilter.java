@@ -1,6 +1,7 @@
 package com.chatop.api.configuration;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -37,12 +38,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         // If the route is login, register or images then continue directly the security
         // chain
         String url = request.getRequestURL().toString();
-        if (url.endsWith("/auth/register") || url.endsWith("/auth/login") 
-                || url.contains("/images/") || url.contains("/swagger-ui/")
-                || url.contains("/v3/api-docs")) {
-
+        boolean isAllowedRoute = Arrays.stream(SpringSecurityConfiguration.allowedRoutes).anyMatch(entry -> {
+            if (entry.contains("**")) {
+                return url.contains(entry.replace("/**", ""));
+            } else {
+                return url.endsWith(entry);
+            }
+        });
+        if(isAllowedRoute)
+        {
             filterChain.doFilter(request, response);
-            
             return;
         }
 

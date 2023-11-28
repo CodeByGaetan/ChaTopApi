@@ -37,3 +37,4 @@ build/
 
 ### Others ###
 images/
+.env
