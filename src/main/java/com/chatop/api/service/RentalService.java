@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.chatop.api.model.entity.DBUser;
 import com.chatop.api.model.entity.Rental;
-import com.chatop.api.model.request.RentalRequest;
+import com.chatop.api.model.request.RentalAddRequest;
+import com.chatop.api.model.request.RentalUpRequest;
 import com.chatop.api.model.response.RentalResponse;
 import com.chatop.api.model.response.RentalsResponse;
 import com.chatop.api.repository.RentalRepository;
@@ -44,14 +45,14 @@ public class RentalService {
         return generatRentalResponse(rental);
     }
 
-    public Rental createRental(RentalRequest rentalRequest) {
+    public Rental createRental(RentalAddRequest rentalAddRequest) {
         Rental rental = new Rental();
-        rental.setName(rentalRequest.getName());
-        rental.setSurface(rentalRequest.getSurface());
-        rental.setPrice(rentalRequest.getPrice());
-        rental.setDescription(rentalRequest.getDescription());
+        rental.setName(rentalAddRequest.getName());
+        rental.setSurface(rentalAddRequest.getSurface());
+        rental.setPrice(rentalAddRequest.getPrice());
+        rental.setDescription(rentalAddRequest.getDescription());
 
-        MultipartFile imgFile = rentalRequest.getPicture();
+        MultipartFile imgFile = rentalAddRequest.getPicture();
         String imgNameExt = UUID.randomUUID() + imageService.getExtension(imgFile.getOriginalFilename());
         String imgUrl = imageService.save(imgFile, imgNameExt);
         rental.setPicture(imgUrl);
@@ -65,17 +66,17 @@ public class RentalService {
         return rentalRepository.save(rental);
     }
 
-    public Rental updateRental(RentalRequest rentalRequest, Integer id) throws Exception {
+    public Rental updateRental(RentalUpRequest rentalUpRequest, Integer id) throws Exception {
 
         Rental rental = rentalRepository.findById(id).orElseThrow();
 
         // Update only if the current user is the rental's owner
         DBUser currentUser = userService.getCurrentUser();
         if (currentUser.getId() == rental.getOwner_id()) {
-            rental.setName(rentalRequest.getName());
-            rental.setSurface(rentalRequest.getSurface());
-            rental.setPrice(rentalRequest.getPrice());
-            rental.setDescription(rentalRequest.getDescription());
+            rental.setName(rentalUpRequest.getName());
+            rental.setSurface(rentalUpRequest.getSurface());
+            rental.setPrice(rentalUpRequest.getPrice());
+            rental.setDescription(rentalUpRequest.getDescription());
             rental.setUpdated_at(new Date(System.currentTimeMillis()));
         } else {
             throw new Exception("Rental update not authorized");

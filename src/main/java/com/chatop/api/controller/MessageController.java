@@ -7,6 +7,7 @@ import com.chatop.api.model.response.MessageResponse;
 import com.chatop.api.service.MessageService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "Messages", description = "API for CRUD operations on Messages")
 @RestController
 public class MessageController {

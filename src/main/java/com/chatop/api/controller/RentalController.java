@@ -7,17 +7,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chatop.api.model.request.RentalRequest;
+import com.chatop.api.model.request.RentalAddRequest;
+import com.chatop.api.model.request.RentalUpRequest;
 import com.chatop.api.model.response.MessageResponse;
 import com.chatop.api.model.response.RentalResponse;
 import com.chatop.api.model.response.RentalsResponse;
 import com.chatop.api.service.RentalService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+@SecurityRequirement(name = "Bearer Authentication")
 @Tag(name = "Rentals", description = "API for CRUD operations on Rentals")
 @RestController
 public class RentalController {
@@ -39,16 +42,16 @@ public class RentalController {
 
   @Operation(summary = "Create a new rental")
   @PostMapping(path = "/rentals", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public MessageResponse createRental(@ModelAttribute RentalRequest rentalRequest ) {
-    rentalService.createRental(rentalRequest);
+  public MessageResponse createRental(@ModelAttribute RentalAddRequest rentalAddRequest ) {
+    rentalService.createRental(rentalAddRequest);
     return new MessageResponse("Rental created !");
   }
 
   @Operation(summary = "Update a rental")
   @PutMapping("/rentals/{id}")
-  public MessageResponse updateRental( RentalRequest rentalRequest, @PathVariable("id") final Integer id) {
+  public MessageResponse updateRental( RentalUpRequest rentalUpRequest, @PathVariable("id") final Integer id) {
     try {
-      rentalService.updateRental(rentalRequest, id);
+      rentalService.updateRental(rentalUpRequest, id);
     } catch (Exception e) {
       // Rental update not authorized
     }

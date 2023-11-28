@@ -1,6 +1,6 @@
 # ChaTop Api
 
-The API of the ChâTop Web App. Provide access and operations on the ChâTop applicaiton database.
+The API of the ChâTop Web App. Provide access and operations on the ChâTop application database.
 
 This project uses :
 - [JAVA] version 17
