@@ -13,7 +13,7 @@ import com.chatop.api.repository.MessageRepository;
 public class MessageService {
 
     @Autowired
-    MessageRepository messageRepository;
+    private MessageRepository messageRepository;
     
     public Message createMessage(MessageRequest messageRequest) throws Exception {
 

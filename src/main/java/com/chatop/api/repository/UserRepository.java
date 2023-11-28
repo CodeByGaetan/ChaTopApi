@@ -9,5 +9,5 @@ import com.chatop.api.model.entity.DBUser;
 
 @Repository
 public interface UserRepository extends CrudRepository<DBUser, Integer> {
-    Optional<DBUser> findByEmail(String email);
+    public Optional<DBUser> findByEmail(String email);
 }

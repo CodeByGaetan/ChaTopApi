@@ -18,7 +18,7 @@ import com.chatop.api.utility.EnvironmentUtility;
 public class ImageService {
 
     @Autowired
-    EnvironmentUtility envUtil;
+    private EnvironmentUtility envUtil;
 
     private final Path root = Paths.get("./images");
 

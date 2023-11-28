@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class MessageController {
 
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
 
     @Operation(summary = "Create a message")
     @PostMapping("/messages")

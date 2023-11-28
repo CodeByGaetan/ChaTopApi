@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnvironmentUtility {
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     private String port;
     private String hostname;
