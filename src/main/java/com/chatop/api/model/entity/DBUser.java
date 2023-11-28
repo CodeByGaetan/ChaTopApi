@@ -15,13 +15,13 @@ import lombok.Data;
 public class DBUser {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String email;
     private String name;
     private String password;
     private Date created_at;
     private Date updated_at;
-   
+
 }

@@ -33,23 +33,23 @@ public class RentalController {
   public RentalsResponse getRentals() {
     return rentalService.getRentals();
   }
-  
+
   @Operation(summary = "Get a rental by Id")
-	@GetMapping("/rentals/{id}")
-	public RentalResponse getRentalById(@PathVariable("id") final Integer id) {
-		return rentalService.getRentalById(id);
-	}
+  @GetMapping("/rentals/{id}")
+  public RentalResponse getRentalById(@PathVariable("id") final Integer id) {
+    return rentalService.getRentalById(id);
+  }
 
   @Operation(summary = "Create a new rental")
-  @PostMapping(path = "/rentals", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-  public MessageResponse createRental(@ModelAttribute RentalAddRequest rentalAddRequest ) {
+  @PostMapping(path = "/rentals", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+  public MessageResponse createRental(@ModelAttribute RentalAddRequest rentalAddRequest) {
     rentalService.createRental(rentalAddRequest);
     return new MessageResponse("Rental created !");
   }
 
   @Operation(summary = "Update a rental")
   @PutMapping("/rentals/{id}")
-  public MessageResponse updateRental( RentalUpRequest rentalUpRequest, @PathVariable("id") final Integer id) {
+  public MessageResponse updateRental(RentalUpRequest rentalUpRequest, @PathVariable("id") final Integer id) {
     try {
       rentalService.updateRental(rentalUpRequest, id);
     } catch (Exception e) {
