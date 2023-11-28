@@ -36,10 +36,13 @@ public class JwtService {
     }
 
     private String generateToken(Map<String, Object> extraClaims, DBUser userDetails) {
-        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getEmail())
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 1))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
 
